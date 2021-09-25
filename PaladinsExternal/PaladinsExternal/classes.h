@@ -5,6 +5,8 @@
 #include "math.h"
 #include "Mhyprot/baseadress.h"
 
+
+
 template<class T>
 class TArray
 {
@@ -127,20 +129,10 @@ struct FAccuracySettings
 };
 
 static FRecoilSettings oldRecoilSettings;
-static bool hasRecoil = true;
 static FAccuracySettings oldAccuracySettings;
-static bool hasSpread = true;
 
 class ATgDevice {
 public:
-	inline FRecoilSettings GetRecoil() {
-		return read<FRecoilSettings>(data + GameOffset.RECOIL_SETTINGS);
-	}
-
-	inline bool SetRecoil(FRecoilSettings settings) {
-		return write(data + GameOffset.RECOIL_SETTINGS, settings);
-	}
-
 	inline FAccuracySettings GetAccuracy() {
 		return read<FAccuracySettings>(data + GameOffset.ACCURACY_SETTINGS);
 	}
@@ -148,46 +140,6 @@ public:
 	inline bool SetAccuracy(FAccuracySettings settings) {
 		return write(data + GameOffset.ACCURACY_SETTINGS, settings);
 	}
-
-	inline void NoRecoil(bool toggle = true) {
-		if (toggle) {
-			auto recoil = GetRecoil();
-			if (recoil.bUsesRecoil) {
-				oldRecoilSettings = recoil;
-			}
-			recoil.bUsesRecoil = false;
-			recoil.fRecoilCenterDelay = 0;
-			recoil.fRecoilReductionPerSec = 0;
-			recoil.fRecoilSmoothRate = 0;
-			hasRecoil = false;
-			SetRecoil(recoil);
-		}
-		else {
-			if (!hasRecoil) {
-				hasRecoil = true;
-				SetRecoil(oldRecoilSettings);
-			}
-		}
-	}
-
-
-	inline void NoSpread(bool toggle) {
-		if (toggle) {
-			auto accuracy = GetAccuracy();
-			accuracy.fAccuracyGainPerSec = 0;
-			accuracy.fMaxAccuracy = 1;
-			accuracy.fMinAccuracy = 1;
-			hasSpread = false;
-			SetAccuracy(accuracy);
-		}
-		else {
-			if (!hasSpread) {
-				hasSpread = true;
-				SetAccuracy(oldAccuracySettings);
-			}
-		}
-	}
-
 
 	inline int GetAmmoCount() {
 		return read<int>(data + GameOffset.AMMO_COUNT);
