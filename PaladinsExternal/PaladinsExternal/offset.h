@@ -1,4 +1,3 @@
-//BLUEFIRE1337 PALADINS SDK - UPDATED 2021-08-19
 #pragma once
 
 #ifndef PALADINS_H
@@ -27,7 +26,8 @@ inline namespace Paladins
 		class Offsets : public Singleton<Offsets>
 		{
 		public:
-			DWORD ENGINE = 0x371E880; // Paladins.exe + ENGINE -> UEngine 
+			//DWORD ENGINE = 0x371E880; // Paladins.exe + ENGINE -> UEngine 
+			DWORD ENGINE = 0x3744C50;
 
 			DWORD LOCALPLAYER = 0x6D8; // UEngine -> ULocalPlayer
 			DWORD CONTROLLER = 0x68; // ULocalPlayer -> APlayerController
@@ -78,4 +78,3 @@ inline namespace Paladins
 #define GameOffset Paladins::Offsets::Get()
 }
 #endif  !PALADINS_H
-
