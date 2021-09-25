@@ -1,7 +1,10 @@
 #ifndef X2295_UTILS_OVERLAY
 #define X2295_UTILS_OVERLAY 1
+#ifndef FOverlay_H
+#define FOverlay_H
 
 #include <windows.h>
+#include <stdio.h>
 #include <tchar.h>
 #include <memory>
 #include <thread>
@@ -11,6 +14,10 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <string>
+#include <d2d1.h>
+#include <dwrite.h>
+#pragma comment(lib, "Dwrite")
+#pragma comment(lib, "d2d1.lib")
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_dx11.h"
@@ -20,6 +27,31 @@
 #pragma comment(lib,"dwmapi.lib")
 #pragma comment(lib,"d3dcompiler") 
 
+#define _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_WARNINGS
+
+class FOverlay
+{
+public:
+	auto window_set_style()-> void;
+	auto window_set_transparency()-> void;
+	auto window_set_top_most()-> void;
+	auto retrieve_window()->HWND;
+	auto window_init()->BOOL;
+	auto d2d_shutdown()-> void;
+	auto init_d2d()->BOOL;
+	auto begin_scene()-> void;
+	auto end_scene()-> void;
+	auto clear_scene()-> void;
+	auto draw_text_white(int x, int y, const char* str, ...)-> void;
+	auto draw_text_red(int x, int y, const char* str, ...)-> void;
+	auto draw_text_green(int x, int y, const char* str, ...)-> void;
+	auto clear_screen()-> void;
+	auto draw_text(int x, int y, D2D1::ColorF color, const char* str, ...) -> void;
+	auto draw_line(int x1, int y1, int x2, int y2, D2D1::ColorF color) -> void;
+};
+
+#endif
 
 inline std::string string_To_UTF8(const std::string& str)
 {
@@ -103,6 +135,7 @@ namespace X2295
 		static auto RectFilled(float x0, float y0, float x1, float y1, ImColor color, float rounding, int rounding_corners_flags)->VOID;
 		static auto IsInScrren(const ImVec2& aPos)->BOOLEAN;
 		static auto TabButton(const char* label, int* index, int val, bool sameline)->VOID;
+
 	};
 }
 
